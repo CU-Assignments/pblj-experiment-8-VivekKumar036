@@ -1,0 +1,58 @@
+ 2. Write a servlet to accept user credentials through an HTML form and display a personalized welcome message if the login is successful.
+
+//Step 1: Create the HTML Form (login.html)
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+</head>
+<body>
+    <h2>User Login</h2>
+    <form action="LoginServlet" method="post">
+        Username: <input type="text" name="username" required><br><br>
+        Password: <input type="password" name="password" required><br><br>
+        <input type="submit" value="Login">
+    </form>
+</body>
+</html>
+
+
+//Step 2: Create the Java Servlet (LoginServlet.java)
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+public class LoginServlet extends HttpServlet {
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        // Retrieve form inputs
+        String username = request.getParameter("username");
+        String password = request.getParameter("password");
+
+        // Hardcoded credentials check
+        if ("user".equals(username) && "pass123".equals(password)) {
+            out.println("<h2>Welcome, " + username + "!</h2>");
+        } else {
+            out.println("<h3>Login failed. Invalid credentials.</h3>");
+            out.println("<a href='login.html'>Go back to Login</a>");
+        }
+    }
+}
+
+
+//Step 3: Configure web.xml
+
+<web-app>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>LoginServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
+    </servlet-mapping>
+</web-app>
